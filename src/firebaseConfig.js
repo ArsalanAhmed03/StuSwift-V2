@@ -10,14 +10,15 @@ import { initializeApp } from "firebase/app";
 // };
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBpDrfqPisMpldePPn-paEUv7vUfb8CME4",
+    apiKey: "AIzaSyBD-xMqK2I9Z22R1iGzwCK74YqJujCf3GQ",
     authDomain: "stuswift-eb2f0.firebaseapp.com",
     projectId: "stuswift-eb2f0",
     storageBucket: "stuswift-eb2f0.firebasestorage.app",
     messagingSenderId: "325110710893",
-    appId: "1:325110710893:web:12636e4c72c389dd91f564",
+    appId: "1:325110710893:android:e90180cea6a1be7891f564",
     measurementId: "G-E8B8YTVKGJ"
 };
+
 
 const firebaseApp = initializeApp(firebaseConfig);
 

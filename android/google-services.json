@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "853136188152",
-    "project_id": "stuswift-android",
-    "storage_bucket": "stuswift-android.firebasestorage.app"
+    "project_number": "325110710893",
+    "project_id": "stuswift-eb2f0",
+    "storage_bucket": "stuswift-eb2f0.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:853136188152:android:0abcc01b8a9a074ad1d10d",
+        "mobilesdk_app_id": "1:325110710893:android:e90180cea6a1be7891f564",
         "android_client_info": {
-          "package_name": "com.excessGroup.StuSwift"
+          "package_name": "com.Stuswift.Stuswift"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAZ6ArCbWr-xTU1no8PrWA9yH8WvF3HHns"
+          "current_key": "AIzaSyBD-xMqK2I9Z22R1iGzwCK74YqJujCf3GQ"
         }
       ],
       "services": {
