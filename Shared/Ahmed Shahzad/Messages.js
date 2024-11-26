@@ -3,7 +3,10 @@ import {View,StyleSheet,Text,TextInput,ScrollView,TouchableOpacity,FlatList} fro
 import { Ionicons } from '@expo/vector-icons';
 import { FetchGroupDescription,FetchMessages } from './Fetching';
 import { SentMessage,AuthService } from './Authentication';
+import { LinearGradient } from 'expo-linear-gradient';
+
 export function Messages_page({navigation,route}){
+
     const {groupName,groupID}=route.params|| {};
     const [showd,setd]=useState('');
     const [messagesList,setmessagesList]=useState([]);
@@ -11,6 +14,7 @@ export function Messages_page({navigation,route}){
         message:'',
         groupID:groupID,
       });
+
     const gotochats=()=>{
         navigation.navigate('Chats Page');
     }
@@ -28,6 +32,7 @@ export function Messages_page({navigation,route}){
         setmessagesList(messages);
     }
     fetchmessages();
+
     const handlesend=async()=>{
         const SendMessageInstance=new SentMessage();
         const SENDMESSAGE =new AuthService(SendMessageInstance);
@@ -35,14 +40,10 @@ export function Messages_page({navigation,route}){
         setFormData({ ...formData, message: '' });
         fetchmessages();
     }
+    
     return(
         <View style={messages_style.main}>
         <View style={messages_style.topbar}>
-        <View style={messages_style.ArrowContainer}>
-            <TouchableOpacity onPress={gotochats}>
-            <Ionicons name="arrow-back-sharp"  size={30} color="black" cursor="pointer"/>
-            </TouchableOpacity>
-        </View>
             <View style={messages_style.GroupimgContainer}>
             <Ionicons  size={30} name="people-circle" />
                 <Text style={messages_style.Gname}>{groupName}</Text>
@@ -51,22 +52,24 @@ export function Messages_page({navigation,route}){
                 <Text style={messages_style.GDescription}>Description: {showd}</Text>
             </View>
         </View>
-        <ScrollView style={messages_style.scrollContainer}>
-        <FlatList
+        <FlatList contentContainerStyle={messages_style.scrollContainer}
+                style={messages_style.scrollView}
               data={messagesList}
               keyExtractor={(item, index)=>index.toString()}
               renderItem={({ item,index }) => (
                 <View style={messages_style.messageContainer} key={index}>
+                    <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={messages_style.messageContainer}>
                     <Text style={{color:'white',padding:5,fontWeight:'bold'}}>{item.sendby}</Text>
                     <Text style={{color:'white',padding:5}}>{item.message}</Text>
+                    </LinearGradient>
                 </View>
               )}
               />
-        </ScrollView>
         <View style={messages_style.bottombar}>
             <TextInput style={messages_style.messagesinput} value={formData.message} onChangeText={(text)=>setFormData({...formData,message:text})} placeholder='Text Message'/>
             <TouchableOpacity onPress={handlesend}>
-                <Ionicons style={{right:0, color: '#3B3B98',alignItems:'center',justifyContent:'center',marginTop:10,marginLeft:10}} name='send' size={24} />
+                <Ionicons style={{right:0,color:'#4E5A8C', alignItems:'center',justifyContent:'center',marginTop:10,marginLeft:10}} name='send' size={24} />
             </TouchableOpacity>
         </View>
         </View>
@@ -85,15 +88,10 @@ const messages_style=StyleSheet.create(
         left: 0,
         right: 0,
         height:105,
-        borderBottomColor:'#3B3B98',
+        borderBottomColor:"#4E5A8C",
         borderBottomWidth:2,
         backgroundColor:"white",
         zIndex: 10,
-        },
-        ArrowContainer:{
-            position:'absolute',
-            top:10,
-            left:8
         },
         GroupimgContainer:{
         flexDirection: 'row',      
@@ -126,11 +124,15 @@ const messages_style=StyleSheet.create(
             paddingLeft:10,
             paddingRight:10
           },
+          scrollView: {
+            flex: 1,
+            paddingBottom: 10,
+        },
         bottombar:{
             height:60,
         width:'100%',
         backgroundColor:'white',
-        borderTopColor:'#3B3B98',
+        borderTopColor:"#4E5A8C",
         borderTopWidth:2,
         // borderTopLeftRadius:20,
         // borderTopRightRadius:20,
@@ -145,14 +147,13 @@ const messages_style=StyleSheet.create(
         messagesinput:{
             height:40,
             width:'90%',
-            borderColor:'#3B3B98',
+            borderColor:"#4E5A8C",
             borderWidth:1,
             padding:10,
-            color:'#3B3B98',
+            color:"#4E5A8C",
             borderRadius:15
         },
         messageContainer:{
-            backgroundColor: '#3B3B98',
             borderColor:'white',
             borderWidth:1,
             width:'100%',

@@ -16,21 +16,21 @@ export function L({ navigation }) {
     email:'',
     password: '',
   });
+
   const handlelogin=async() =>{
     if (!formData.email || !formData.password) {
       alert('Fill all fields');
       return;
     }
-
+    const email = formData.email.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(formData.email)) {
+    if (!emailPattern.test(email)) {
       alert('Please enter a valid email address');
       return;
     }
     const loginInstance=new LoginClass();
     const AuthLogin=new AuthService(loginInstance)
     AuthLogin.authenticate(formData);
-    navigation.navigate('Chats Page'); 
     alert('Welcome ' + formData.email);
   }
   

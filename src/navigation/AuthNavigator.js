@@ -1,15 +1,15 @@
 // src/navigation/AuthNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from '../components/Auth/LoginScreen';
-import SignupScreen from '../components/Auth/SignupScreen';
+import {L} from '../../Shared/Ahmed Shahzad/Login';
+import {S} from '../../Shared/Ahmed Shahzad/Signup';
 
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => (
     <Stack.Navigator>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Login" component={L} />
+        <Stack.Screen name="SignUp" component={S} />
     </Stack.Navigator>
 );
 

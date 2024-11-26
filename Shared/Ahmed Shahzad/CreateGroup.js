@@ -3,6 +3,7 @@ import {Text,View,StyleSheet,ScrollView,Image,TouchableOpacity,TextInput,FlatLis
 import { Ionicons } from '@expo/vector-icons';
 import {Fetchusername} from './Fetching';
 import { AddGroup,AuthService } from './Authentication'; 
+import { LinearGradient } from 'expo-linear-gradient';
 
 export  function Creategroup({ navigation }){
 
@@ -53,16 +54,12 @@ export  function Creategroup({ navigation }){
         <View style={creategroupstyles.maincontainer}>
             <>
         <View style={creategroupstyles.HeadingContainer}>
-        <View style={creategroupstyles.ArrowContainer}>
-            <TouchableOpacity onPress={()=>navigation.navigate('Chats Page')}>
-            <Ionicons name="arrow-back-sharp" size={30} color="black" cursor="pointer"/>
-            </TouchableOpacity>
-        </View>
             <Text style={creategroupstyles.Heading}>Connect People</Text>
         </View>
         <View style={creategroupstyles.GroupiconContainer}>
             <Ionicons  size={60} name="people-circle" />
         </View>
+        <ScrollView>
         <View style={creategroupstyles.bodyContainer}>
             <TextInput style={creategroupstyles.bodyText} value={formData.GroupName} onChangeText={(text)=>setFormData({...formData,GroupName:text})}  placeholder='Group Name'></TextInput>
         </View>
@@ -72,8 +69,12 @@ export  function Creategroup({ navigation }){
         <View style={creategroupstyles.bodyContainer}>
             <TextInput style={creategroupstyles.bodyText} value={formData.GroupMembers.join(', ')} onChangeText={(text)=>setFormData({...formData,GroupMembers:text})}  placeholder="Select Usernames"></TextInput>
                 <TouchableOpacity style={creategroupstyles.select_plusPress} onPress={()=>setShowDropdown(true)}>
+                <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={creategroupstyles.select_plusPress}>
                     <Ionicons name="add-outline" size={25} color="white" />
-                </TouchableOpacity>
+                    </LinearGradient>
+                    </TouchableOpacity>
+                
         </View>
         <Modal visible={showDropdown} transparent={true} animationType="fade">
            <View style={creategroupstyles.modalContainer}>
@@ -88,7 +89,10 @@ export  function Creategroup({ navigation }){
               )}
             />
             <TouchableOpacity style={creategroupstyles.closeButton} onPress={() => setShowDropdown(false)}>
+            <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={creategroupstyles.closeButton}>
               <Text style={creategroupstyles.closeButtonText}>Close</Text>
+              </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
@@ -96,10 +100,14 @@ export  function Creategroup({ navigation }){
 
 
         <View style={creategroupstyles.buttoncontainer}>
+        <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={creategroupstyles.creategroupbutton}>
         <TouchableOpacity style={creategroupstyles.creategroupbutton} onPress={handle_creategroup}>
             <Text style={creategroupstyles.creategrouptext} >Create a Group</Text>
         </TouchableOpacity>
+        </LinearGradient>
         </View>
+        </ScrollView>
         </>
         </View>
     );
@@ -116,11 +124,6 @@ const creategroupstyles=StyleSheet.create({
     Heading:{
         fontSize:30,
         fontWeight:'bold',
-    },
-    ArrowContainer:{
-        position:'absolute',
-        top:10,
-        left:8
     },
     GroupiconContainer:{
         alignItems:'center',
@@ -148,7 +151,6 @@ const creategroupstyles=StyleSheet.create({
         marginTop: 20,
     },
     creategroupbutton:{
-        backgroundColor:'#3B3B98',
         height:50,
         width:160,
         borderRadius:15,
@@ -165,7 +167,6 @@ const creategroupstyles=StyleSheet.create({
         right: 10, 
         top: '50%',
         marginTop: -15, 
-        backgroundColor: '#3B3B98',
         borderRadius:20,
     },
     Modalstyles: {
@@ -196,7 +197,6 @@ const creategroupstyles=StyleSheet.create({
           },
           closeButton: {
             marginTop: 20,
-            backgroundColor: '#3B3B98',
             borderRadius: 10,
             padding: 10,
             alignItems: 'center',
