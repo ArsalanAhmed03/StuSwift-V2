@@ -1,9 +1,8 @@
 // src/navigation/AuthNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import {L} from '../../Shared/Ahmed Shahzad/Login';
-import {S} from '../../Shared/Ahmed Shahzad/Signup';
-
+import { L } from '../components/Auth/Login';
+import { S } from '../components/Auth/Signup';
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => (

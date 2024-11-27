@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {Text,View,StyleSheet,ScrollView,Image,TouchableOpacity,TextInput,FlatList,Modal} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {Fetchusername} from './Fetching';
-import { AddGroup,AuthService } from './Authentication'; 
+import { Fetchusername } from '../../../services/Firebase/Fetching';
+import { AddGroup,AuthService } from '../../../services/Firebase/AuthService';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export  function Creategroup({ navigation }){
@@ -115,7 +115,8 @@ export  function Creategroup({ navigation }){
 const creategroupstyles=StyleSheet.create({
     maincontainer:{
         flex:1,
-        backgroundColor:'white'
+        backgroundColor:'white',
+        paddingTop:'50'
     },
        HeadingContainer:{
         flexDirection: 'row',

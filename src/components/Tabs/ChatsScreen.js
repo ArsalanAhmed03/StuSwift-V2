@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import {Text,View,StyleSheet,ScrollView,Image,TouchableOpacity,FlatList} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import {FetchChatGroups} from './Fetching';
+import { FetchChatGroups } from '../../services/Firebase/Fetching';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export function ChatPage({navigation}){
@@ -61,6 +61,7 @@ const mainstyles=StyleSheet.create({
     maincontainer:{
         flex:1,
         backgroundColor:'white',
+        paddingTop:'50'
     },
     HeadingContainer:{
         flexDirection: 'row',
@@ -76,7 +77,7 @@ const mainstyles=StyleSheet.create({
     },
     PlusContainer:{
         position: 'absolute', 
-        bottom: 100, 
+        bottom: 10, 
         alignItems:'center',
         right:10,
     },

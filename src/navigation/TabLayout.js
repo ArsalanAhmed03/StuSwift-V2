@@ -74,7 +74,7 @@ const TabLayout = () => {
         component={HomeNavigator}
         options={{
           title: "Home",
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -82,7 +82,7 @@ const TabLayout = () => {
         component={ChatNavigator}
         options={{
           title: "Chats",
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -90,7 +90,7 @@ const TabLayout = () => {
         component={MusicNavigator}
         options={{
           title: "Music",
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -98,7 +98,7 @@ const TabLayout = () => {
         component={ProfileNavigator}
         options={{
           title: "Profile",
-          headerShown: true,
+          headerShown: false,
         }}
       />
       <Tab.Screen
@@ -106,7 +106,7 @@ const TabLayout = () => {
         component={TaskNavigator}
         options={{
           title: "Tasks",
-          headerShown: true,
+          headerShown: false,
         }}
       />
     </Tab.Navigator>

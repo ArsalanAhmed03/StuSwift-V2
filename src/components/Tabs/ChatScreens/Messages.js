@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import {View,StyleSheet,Text,TextInput,ScrollView,TouchableOpacity,FlatList} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { FetchGroupDescription,FetchMessages } from './Fetching';
-import { SentMessage,AuthService } from './Authentication';
+import { FetchGroupDescription,FetchMessages  } from '../../../services/Firebase/Fetching';
+import { SentMessage,AuthService  } from '../../../services/Firebase/AuthService';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export function Messages_page({navigation,route}){
@@ -79,8 +79,7 @@ const messages_style=StyleSheet.create(
     {
         main:{
         flex:1,
-        // backgroundColor:'white',
-
+        paddingTop:'50'
         },
         topbar:{
         position: 'absolute',   

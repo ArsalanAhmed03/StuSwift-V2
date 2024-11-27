@@ -1,85 +1,76 @@
-// src/services/Firebase/AuthService.js
-import {
-  initializeAuth,
-  getAuth,
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  getReactNativePersistence,
-} from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  collection,
-  getDocs,
-} from "firebase/firestore";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import firebaseApp from "../../firebaseConfig";
+// import { FIREBASE_AUTH,FIRESTORE_DB } from '../../firebaseConfig';
+import { FIREBASE_AUTH,FIRESTORE_DB } from "./firebaseConfig";
 
-class AuthService {
-  constructor() {
-    // Initialize Firebase Auth with AsyncStorage for persistence
-    this.auth = initializeAuth(firebaseApp, {
-      persistence: getReactNativePersistence(AsyncStorage),
-    });
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {collection,getDocs,addDoc,getDoc} from 'firebase/firestore';
+import { doc, setDoc } from "firebase/firestore";
+import { getAuth } from 'firebase/auth';
 
-    // Initialize Firestore database
-    this.db = getFirestore(firebaseApp);
-  }
-
-  // Login function
-  async login(email, password) {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      return userCredential.user; // Return user data
-    } catch (error) {
-      throw new Error(error.message);
+class AuthService{
+    constructor(instance){
+        this.instance=instance
     }
-  }
-
-  // Signup function
-  async signup({ fullname, username, email, password }) {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        this.auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      // Add user data to Firestore
-      await setDoc(doc(this.db, "Users", user.uid), {
-        fullName: fullname,
-        username: username,
-        email: email,
-        password: password, // Note: Avoid storing plain passwords in production
+    authenticate=async(formData)=>{
+        return await this.instance.authenticate(formData)
+    }
+}
+class LoginClass extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+        const auth=FIREBASE_AUTH;
+        const userCredential = await signInWithEmailAndPassword(auth,formData.email, formData.password);
+    }
+}
+class SignUpClass extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+        const auth=FIREBASE_AUTH;
+        const userinfo=await createUserWithEmailAndPassword(auth,formData.email,formData.password);
+        const user= userinfo.user;
+    await setDoc(doc(FIRESTORE_DB, "Users", user.uid), {
+        fullName: formData.fullname,
+        username: formData.username,
+        email: formData.email,
+        password:formData.password,
         createdAt: new Date(),
       });
-    } catch (error) {
-      throw new Error(error.message);
     }
-  }
-
-  // Fetch all usernames and emails from Firestore
-  async getUserData() {
-    try {
-      const usernames = [];
-      const emails = [];
-      const querySnapshot = await getDocs(collection(this.db, "Users"));
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        usernames.push(data.username);
-        emails.push(data.email);
-      });
-      return { usernames, emails };
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
 }
 
-export default new AuthService();
+class AddGroup extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+        const GroupCollection=collection(FIRESTORE_DB,"Groups");
+        addDoc(GroupCollection,{
+            GroupName:formData.GroupName,
+            GroupDescription:formData.GroupDescription,
+            GroupMembers:formData.GroupMembers,
+            created_at:new Date(),
+        })
+    }
+}
+class SentMessage extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+        const user = getAuth().currentUser;
+        const userDoc =await getDoc(doc(FIRESTORE_DB, 'Users', user.uid));
+        const userData = userDoc.data();
+        const uname=userData.username;
+        const messageData={
+            sender: uname,
+            message: formData.message,
+            sendAt: new Date(),
+        }
+        const groupmessages=collection(FIRESTORE_DB,'Groups',formData.groupID,'Messages');
+        await addDoc(groupmessages,messageData);
+    }
+}
+export { LoginClass ,AuthService,SignUpClass,AddGroup,SentMessage};

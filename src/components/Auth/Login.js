@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import {LoginClass,AuthService} from './Authentication';
+import { LoginClass,AuthService } from "../../services/Firebase/AuthService";
 
 export function L({ navigation }) {
 

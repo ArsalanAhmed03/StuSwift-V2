@@ -1,7 +1,8 @@
 
 import { getAuth } from 'firebase/auth';
-import { FIREBASE_AUTH,FIRESTORE_DB } from './FireBaseConfig';
+import { FIREBASE_AUTH,FIRESTORE_DB } from "./firebaseConfig";
 import {collection,getDocs,getDoc,doc,query,orderBy} from 'firebase/firestore';
+
 class Fetching{
     constructor(instance){
         this.instance=instance

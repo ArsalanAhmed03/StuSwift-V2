@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import {Fetchemails,Fetchusername} from './Fetching';
-import {SignUpClass,AuthService} from './Authentication';
+import { Fetchemails,Fetchusername } from "../../services/Firebase/Fetching";
+import { SignUpClass,AuthService } from "../../services/Firebase/AuthService";
 
 export function S({navigation}) {
 
