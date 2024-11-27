@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, ActivityIndicator, FlatList, Image, SafeAreaVie
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useFonts, Montserrat_400Regular, Montserrat_700Bold } from '@expo-google-fonts/montserrat';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
-import fetchSongs from "../data/fetchSongs";
-import fetchArtists from "../data/fetchArtists";
-import fetchRecs from "../data/fetchRecs";
+import fetchSongs from "../../../services/Firebase/fetchSongs";
+import fetchArtists from "../../../services/Firebase/fetchArtists";
+import fetchRecs from "../../../services/Firebase/fetchRecs";
 
 const SpotifyDisplay = () => {
   const [songs, setSongs] = useState([]);

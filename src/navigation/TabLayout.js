@@ -17,14 +17,16 @@ const TabLayout = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        // Gradient background for the tab bar
         tabBarBackground: () => (
           <LinearGradient
             colors={["#747FBB", "#1C214A"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={{ flex: 1 }}
+            style={{ flex: 1, position: "absolute", width: "100%", height: "100%" }}
           />
         ),
+        // Tab bar styles
         tabBarStyle: {
           height: 70,
           borderTopWidth: 0,
@@ -41,7 +43,7 @@ const TabLayout = () => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          // Map routes to icons
+          // Map route names to Ionicons
           if (route.name === "Task") {
             iconName = "checkbox";
           } else if (route.name === "Profile") {
@@ -58,9 +60,10 @@ const TabLayout = () => {
             <View
               style={{
                 backgroundColor: focused ? "white" : "transparent",
-                borderTopLeftRadius: 25,
-                borderTopRightRadius: 25,
+                borderRadius: focused ? 25 : 0,
                 padding: focused ? 7 : 0,
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               <Ionicons name={iconName} color={focused ? "#283593" : color} size={size} />

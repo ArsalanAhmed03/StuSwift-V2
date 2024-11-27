@@ -1,18 +1,28 @@
-// src/navigation/MusicNavigator.js
-import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
-import MusicScreen from "../components/Tabs/MusicScreen";
-
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import SpotifyDisplay from '../components/Tabs/MusicScreens/SpotifyDisplay';
+import SpotifyPlayer from '../components/Tabs/MusicScreens/SpotifyPlayer';
+import SpotifyAuth from '../components/Tabs/MusicScreen';
 const Stack = createStackNavigator();
 
-const MusicNavigator = () => (
-  <Stack.Navigator>
+export default function SpotifyNav() {
+  return (
+    <Stack.Navigator initialRouteName="SpotifyAuth">
     <Stack.Screen
-      name="MusicScreen"
-      component={MusicScreen}
+      name="SpotifyAuth"
+      component={SpotifyAuth}
       options={{ headerShown: false }}
     />
+    <Stack.Screen
+      name="SpotifyDisplay"
+      component={SpotifyDisplay}
+      options={{ title: 'Spotify Display' }}
+    />
+    <Stack.Screen
+      name="SpotifyPlayer"
+      component={SpotifyPlayer}
+      options={{ title: 'Now Playing' }}
+    />
   </Stack.Navigator>
-);
-
-export default MusicNavigator;
+  );
+}
