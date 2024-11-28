@@ -2,7 +2,7 @@
 import { FIREBASE_AUTH,FIRESTORE_DB } from "./firebaseConfig";
 
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import {collection,getDocs,addDoc,getDoc} from 'firebase/firestore';
+import {collection,getDocs,addDoc,getDoc,updateDoc} from 'firebase/firestore';
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth } from 'firebase/auth';
 
@@ -73,4 +73,39 @@ class SentMessage extends AuthService{
         await addDoc(groupmessages,messageData);
     }
 }
-export { LoginClass ,AuthService,SignUpClass,AddGroup,SentMessage};
+class AddTask extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+            const user=getAuth().currentUser;
+            const userdoc=await getDoc(doc(FIRESTORE_DB,"Users",user.uid));
+            const userData=userdoc.data();
+            const name=userData.username;
+      
+            const tasksCollectionRef = collection(FIRESTORE_DB, "tasks");
+            const docRef = await addDoc(tasksCollectionRef, {
+              title:formData.title,
+              dueDate:formData.dueDate,
+              chapter:formData.chapter,
+              description:formData.description,
+              completed: false, // Default task state
+              taskof: name,
+            });
+    }
+}
+class UpdateTask extends AuthService{
+    constructor(){
+        super();
+    }
+    authenticate=async(formData)=>{
+    const taskRef = doc(FIRESTORE_DB, "tasks",formData.taskId );
+      await updateDoc(taskRef, {
+        title:formData.title,
+        dueDate:formData.dueDate,
+        chapter:formData.chapter,
+        description:formData.description
+      });
+    }
+}
+export { LoginClass ,AuthService,SignUpClass,AddGroup,SentMessage,AddTask,UpdateTask};

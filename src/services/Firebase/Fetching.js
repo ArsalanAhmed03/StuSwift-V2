@@ -1,7 +1,7 @@
 
 import { getAuth } from 'firebase/auth';
 import { FIREBASE_AUTH,FIRESTORE_DB } from "./firebaseConfig";
-import {collection,getDocs,getDoc,doc,query,orderBy} from 'firebase/firestore';
+import {collection,getDocs,getDoc,doc,query,orderBy,where} from 'firebase/firestore';
 
 class Fetching{
     constructor(instance){
@@ -95,4 +95,21 @@ class FetchMessages extends Fetching{
         return list;
     }
 }
-export {Fetching,Fetchemails,Fetchusername,FetchChatGroups,FetchGroupDescription,FetchMessages};
+class FetchTasks extends Fetching{
+    constructor(){
+        super();
+    }
+    fetchdata=async()=>{
+        const user=getAuth().currentUser;
+        const userdoc=await getDoc(doc(FIRESTORE_DB,"Users",user.uid));
+        const userData=userdoc.data();
+        const name=userData.username;
+        const tasksSnapshot = await getDocs(query(collection(FIRESTORE_DB, "tasks"),where("taskof","==",name)));
+        const tasksList = tasksSnapshot.docs.map((doc) => ({
+            id: doc.id, // Include the document ID
+            ...doc.data(),
+        }));
+        return tasksList;
+    }
+}
+export {Fetching,Fetchemails,Fetchusername,FetchChatGroups,FetchGroupDescription,FetchMessages,FetchTasks};
