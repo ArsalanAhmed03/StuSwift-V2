@@ -112,4 +112,26 @@ class FetchTasks extends Fetching{
         return tasksList;
     }
 }
-export {Fetching,Fetchemails,Fetchusername,FetchChatGroups,FetchGroupDescription,FetchMessages,FetchTasks};
+class FetchAllData extends Fetching{
+    constructor(){
+        super();
+    }
+    fetchdata=async()=>{
+        const user=getAuth().currentUser;
+        const userdoc=await getDoc(doc(FIRESTORE_DB,"Users",user.uid));
+        const userData=userdoc.data();
+        return userData;
+    }
+}
+class FetchCurrentUserEmail extends Fetching{
+    constructor(){
+        super();
+    }
+    fetchdata=async()=>{
+        const user=getAuth().currentUser;
+        const userdoc=await getDoc(doc(FIRESTORE_DB,"Users",user.uid));
+        const userData=userdoc.data();
+        return userData.email;
+    }
+}
+export {Fetching,Fetchemails,Fetchusername,FetchChatGroups,FetchGroupDescription,FetchMessages,FetchTasks,FetchAllData,FetchCurrentUserEmail};

@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { LoginClass,AuthService } from "../../services/Firebase/AuthService";
-
+import { LinearGradient } from "expo-linear-gradient";
 export function L({ navigation }) {
 
   const [formData, setFormData] = useState({
@@ -60,7 +60,10 @@ export function L({ navigation }) {
       />
 
       <TouchableOpacity style={styles.button} onPress={handlelogin}>
+      <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={styles.button}>
         <Text style={styles.buttonText}>Log In</Text>
+        </LinearGradient>
       </TouchableOpacity>
       <View style={styles.footerContainer}>
         <Text style={styles.footerText}>Don’t have an account?</Text>
@@ -103,7 +106,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    backgroundColor: "#7b7fff",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
       },
       signupText: {
-        color: "#7b7fff",
+        color: "#747FBB",
         fontWeight: "bold",
         marginLeft: 5,
       },

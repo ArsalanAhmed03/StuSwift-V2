@@ -39,9 +39,6 @@ export function AddTaskScreen({ navigation }) {
       style={styles.container}
     >
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
         <Text style={styles.headerTitle}>Add Task</Text>
       </View>
       <View style={styles.formContainer}>
@@ -85,9 +82,11 @@ export function AddTaskScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f0f4f8" },
-  header: { flexDirection: "row", alignItems: "center", padding: 20 },
-  headerTitle: { flex: 1, fontSize: 20, fontWeight: "bold", textAlign: "center", color: "#3B3B98" },
+  container: { flex: 1, backgroundColor: "white", paddingTop:'50' },
+  header: {  flexDirection: 'row',
+  justifyContent: 'center',  },
+  headerTitle: {  fontSize:30,
+    fontWeight:'bold', },
   backButton: { position: "absolute", left: 10 },
   formContainer: { padding: 20 },
   input: {
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#fff",
     borderColor: "#ccc",
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 5,
     marginBottom: 10,
   },
@@ -104,7 +103,7 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: "#fff",
     borderColor: "#ccc",
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 5,
     textAlignVertical: "top",
   },

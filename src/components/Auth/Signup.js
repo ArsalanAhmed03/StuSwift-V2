@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Fetchemails,Fetchusername } from "../../services/Firebase/Fetching";
 import { SignUpClass,AuthService } from "../../services/Firebase/AuthService";
-
+import { LinearGradient } from "expo-linear-gradient";
 export function S({navigation}) {
 
   const[datausernames,setdatausernames]=useState([]);
@@ -110,7 +110,10 @@ const handlesignup=async()=>{
       />
 
       <TouchableOpacity style={styles.button} onPress={handlesignup}>
+      <LinearGradient
+            colors={["#747FBB", "#1C214A"]} style={styles.button}>
         <Text style={styles.buttonText}>Confirm Sign Up</Text>
+        </LinearGradient>
       </TouchableOpacity>
 
       <View style={styles.footerContainer}>
@@ -154,7 +157,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    backgroundColor: "#7b7fff",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   signupText: {
-    color: "#7b7fff",
+    color: "#747FBB",
     fontWeight: "bold",
     marginLeft: 5,
   },

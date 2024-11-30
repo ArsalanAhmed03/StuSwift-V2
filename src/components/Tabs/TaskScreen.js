@@ -49,9 +49,6 @@ export function TaskListScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
         <Text style={styles.headerTitle}>Tasks</Text>
       </View>
       <FlatList
@@ -117,9 +114,11 @@ export function TaskListScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f0f4f8" },
-  header: { flexDirection: "row", alignItems: "center", paddingHorizontal: 20, paddingVertical: 10 },
-  headerTitle: { flex: 1, fontSize: 20, fontWeight: "bold", textAlign: "center", color: "#3B3B98" },
+  container: { flex: 1, backgroundColor: "white", paddingTop:'50'},
+  header: {  flexDirection: 'row',
+  justifyContent: 'center',  },
+  headerTitle: { fontSize:30,
+    fontWeight:'bold',},
   backButton: { position: "absolute", left: 10 },
   taskCard: {
     padding: 10,
