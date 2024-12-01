@@ -10,6 +10,7 @@ import ChatNavigator from "./ChatNavigator";
 import MusicNavigator from "./MusicNavigator";
 import ProfileNavigator from "./ProfileNavigator";
 import TaskNavigator from "./TaskNavigator";
+import FitnessNavigator from "./FitnessNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ const TabLayout = () => {
         },
         tabBarActiveTintColor: "#283593",
         tabBarInactiveTintColor: "#ffffff",
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused, color }) => {
           let iconName;
 
           // Map route names to Ionicons
@@ -54,19 +55,26 @@ const TabLayout = () => {
             iconName = "chatbox";
           } else if (route.name === "Music") {
             iconName = "musical-notes";
+          } else if (route.name === "Fitness") {
+            iconName = "fitness";
           }
 
           return (
             <View
               style={{
-                backgroundColor: focused ? "white" : "transparent",
-                borderRadius: focused ? 25 : 0,
-                padding: focused ? 7 : 0,
                 alignItems: "center",
                 justifyContent: "center",
+                width: 40,
+                height: 40,
+                borderRadius: 20, // Circular shape
+                backgroundColor: focused ? "white" : "transparent", // Dome effect
               }}
             >
-              <Ionicons name={iconName} color={focused ? "#283593" : color} size={size} />
+              <Ionicons
+                name={iconName}
+                color={focused ? "#283593" : color}
+                size={24} // Consistent icon size
+              />
             </View>
           );
         },
@@ -109,6 +117,14 @@ const TabLayout = () => {
         component={TaskNavigator}
         options={{
           title: "Tasks",
+          headerShown: false,
+        }}
+      />
+      <Tab.Screen
+        name="Fitness"
+        component={FitnessNavigator}
+        options={{
+          title: "Fitness",
           headerShown: false,
         }}
       />

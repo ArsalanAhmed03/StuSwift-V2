@@ -6,7 +6,7 @@ import { S } from '../components/Auth/Signup';
 const Stack = createStackNavigator();
 
 const AuthNavigator = () => (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={L} />
         <Stack.Screen name="SignUp" component={S} />
     </Stack.Navigator>
