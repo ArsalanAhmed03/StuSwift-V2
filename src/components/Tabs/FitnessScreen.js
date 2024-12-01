@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, ScrollView, Platform } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Platform,
+  Alert,
+} from "react-native";
 import { Card, Avatar } from "react-native-paper";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 import { Pedometer } from "expo-sensors";
-import * as Permissions from "expo-permissions";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   FetchFitnessData,
@@ -21,17 +27,20 @@ const FitnessScreen = ({ navigation }) => {
 
   const caloriesPerStep = 0.04;
 
-  // Request permissions
   useEffect(() => {
-    const requestPermissions = async () => {
+    const requestActivityRecognitionPermission = async () => {
       if (Platform.OS === "android") {
-        const { status } = await Permissions.askAsync(Permissions.ACTIVITY_RECOGNITION);
+        const { status } = await Pedometer.requestPermissionsAsync();
         if (status !== "granted") {
-          console.log("ACTIVITY_RECOGNITION permission not granted!");
+          Alert.alert(
+            "Permission Denied",
+            "Activity recognition permission is required to count steps."
+          );
         }
       }
     };
-    requestPermissions();
+
+    requestActivityRecognitionPermission();
   }, []);
 
   // Fetch data from Firebase when the screen comes into focus
@@ -59,35 +68,42 @@ const FitnessScreen = ({ navigation }) => {
 
   // Pedometer setup
   useEffect(() => {
-    Pedometer.isAvailableAsync().then(
-      (result) => {
-        setIsPedometerAvailable(result ? "available" : "unavailable");
-      },
-      (error) => {
-        setIsPedometerAvailable("unavailable");
-        console.error("Pedometer Error: ", error);
-      }
-    );
+    const initializePedometer = async () => {
+      try {
+        const isAvailable = await Pedometer.isAvailableAsync();
+        setIsPedometerAvailable(isAvailable ? "available" : "unavailable");
 
-    const subscription = Pedometer.watchStepCount((result) => {
-      console.log("Step count update: ", result);
-      if (result && result.steps) {
-        const steps = result.steps;
-        const newCalories = steps * caloriesPerStep;
-        setCurrentStepCount(steps);
-        setCalories(newCalories);
+        if (!isAvailable) {
+          console.error("Pedometer is not available on this device.");
+          return;
+        }
 
-        // Update Firebase
-        new UpdateFitnessData().fetchdata({
-          stepCount: steps,
-          calories: newCalories,
+        const subscription = Pedometer.watchStepCount((result) => {
+          if (result && result.steps) {
+            const steps = result.steps;
+            const newCalories = steps * caloriesPerStep;
+
+            // Update local state
+            setCurrentStepCount(steps);
+            setCalories(newCalories);
+
+            // Update Firebase
+            new UpdateFitnessData().fetchdata({
+              stepCount: steps,
+              calories: newCalories,
+            });
+          }
         });
-      }
-    });
 
-    return () => {
-      subscription && subscription.remove();
+        return () => {
+          subscription && subscription.remove();
+        };
+      } catch (error) {
+        console.error("Error initializing pedometer:", error);
+      }
     };
+
+    initializePedometer();
   }, []);
 
   // Evaluate heart condition based on fitness data
@@ -136,7 +152,12 @@ const FitnessScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("SleepDuration")}
         >
           <View style={styles.smallCardContent}>
-            <Avatar.Icon size={24} icon="bed" color="white" style={styles.icon} />
+            <Avatar.Icon
+              size={24}
+              icon="bed"
+              color="white"
+              style={styles.icon}
+            />
             <Text style={styles.smallCardTitle}>Sleep</Text>
             <Text style={styles.smallCardValue}>{sleepHours} hr</Text>
           </View>
@@ -185,7 +206,7 @@ const FitnessScreen = ({ navigation }) => {
           />
           <Text style={styles.cardTitle}>Steps</Text>
           <Text style={styles.cardValue}>
-            {currentStepCount}/{fitnessData.stepGoal} steps
+            {currentStepCount}/{fitnessData.stepGoal || 10000} steps
           </Text>
           <Text style={styles.conditionText}>
             Pedometer: {isPedometerAvailable}

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import React from "react";
 import {
@@ -8,36 +7,36 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { LoginClass,AuthService } from "../../services/Firebase/AuthService";
+import { LoginClass, AuthService } from "../../services/Firebase/AuthService";
 import { LinearGradient } from "expo-linear-gradient";
-export function L({ navigation }) {
 
+export function L({ navigation }) {
   const [formData, setFormData] = useState({
-    email:'',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const handlelogin=async() =>{
+  const handlelogin = async () => {
     if (!formData.email || !formData.password) {
-      alert('Fill all fields');
+      alert("Fill all fields");
       return;
     }
     const email = formData.email.trim();
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
-      alert('Please enter a valid email address');
+      alert("Please enter a valid email address");
       return;
     }
-    const loginInstance=new LoginClass();
-    const AuthLogin=new AuthService(loginInstance)
+    const loginInstance = new LoginClass();
+    const AuthLogin = new AuthService(loginInstance);
     AuthLogin.authenticate(formData);
-    alert('Welcome ' + formData.email);
-  }
-  
+    alert("Welcome " + formData.email);
+  };
+
   const signUpPressed = () => {
-        navigation.navigate("SignUp");
-      };
-      
+    navigation.navigate("SignUp");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Sign In Into Your Account</Text>
@@ -48,29 +47,28 @@ export function L({ navigation }) {
         placeholder="Email"
         placeholderTextColor="#ccc"
         value={formData.email}
-        onChangeText={(text)=>setFormData({...formData,email:text})}
+        onChangeText={(text) => setFormData({ ...formData, email: text })}
       />
       <TextInput
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#ccc"
         value={formData.password}
-        onChangeText={(text)=>setFormData({...formData,password:text})}
+        onChangeText={(text) => setFormData({ ...formData, password: text })}
         secureTextEntry={true}
       />
 
       <TouchableOpacity style={styles.button} onPress={handlelogin}>
-      <LinearGradient
-            colors={["#747FBB", "#1C214A"]} style={styles.button}>
-        <Text style={styles.buttonText}>Log In</Text>
+        <LinearGradient colors={["#747FBB", "#1C214A"]} style={styles.button}>
+          <Text style={styles.buttonText}>Log In</Text>
         </LinearGradient>
       </TouchableOpacity>
       <View style={styles.footerContainer}>
         <Text style={styles.footerText}>Don’t have an account?</Text>
         <TouchableOpacity onPress={signUpPressed}>
-           <Text style={styles.signupText}> Sign Up Now</Text>
-         </TouchableOpacity>
-       </View>
+          <Text style={styles.signupText}> Sign Up Now</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -117,16 +115,16 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   footerContainer: {
-        flexDirection: "row",
-        marginTop: 20,
-      },
-      footerText: {
-        color: "#ffffff",
-        fontSize: 14,
-      },
-      signupText: {
-        color: "#747FBB",
-        fontWeight: "bold",
-        marginLeft: 5,
-      },
+    flexDirection: "row",
+    marginTop: 20,
+  },
+  footerText: {
+    color: "#ffffff",
+    fontSize: 14,
+  },
+  signupText: {
+    color: "#747FBB",
+    fontWeight: "bold",
+    marginLeft: 5,
+  },
 });

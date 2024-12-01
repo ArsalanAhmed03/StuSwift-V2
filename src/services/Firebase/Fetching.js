@@ -9,6 +9,7 @@ import {
   orderBy,
   where,
   updateDoc,
+  setDoc
 } from "firebase/firestore";
 
 class Fetching {
@@ -30,6 +31,30 @@ class Fetchusername extends Fetching {
     return allusers;
   };
 }
+class FetchUsernameByEmail extends Fetching {
+  constructor() {
+    super();
+  }
+  fetchdata = async (email) => {
+    if (!email) throw new Error("Email is required");
+
+    const usersCollection = collection(FIRESTORE_DB, "Users");
+    const snapshot = await getDocs(
+      query(usersCollection, where("email", "==", email))
+    );
+
+    if (snapshot.empty) {
+      throw new Error("No user found with the provided email");
+    }
+
+    // Assuming there's only one user with the email
+    const userDoc = snapshot.docs[0];
+    const username = userDoc.data().username;
+
+    return username;
+  };
+}
+
 class Fetchemails extends Fetching {
   constructor() {
     super();
@@ -52,7 +77,6 @@ class FetchChatGroups extends Fetching {
       const userDoc = await getDoc(doc(FIRESTORE_DB, "Users", user.uid));
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        console.log("Username:", userData.username);
         const currentUser = userData.username;
         const groups = collection(FIRESTORE_DB, "Groups");
         const snapshot = await getDocs(groups);
@@ -86,7 +110,6 @@ class FetchGroupDescription extends Fetching {
       })
       .map((doc) => doc.data().GroupDescription);
     const groupdescription = g_d;
-    console.log(groupdescription);
     return groupdescription;
   };
 }
@@ -158,7 +181,6 @@ class FetchFitnessData extends Fetching {
     try {
       const user = getAuth().currentUser;
       if (!user) throw new Error("User not authenticated");
-      console.log(user.uid);
       const fitnessDoc = await getDoc(doc(FIRESTORE_DB, "Fitness", user.uid));
       if (fitnessDoc.exists()) {
         return fitnessDoc.data();
@@ -189,6 +211,65 @@ class UpdateFitnessData extends Fetching {
   };
 }
 
+class FetchAlarms extends Fetching {
+  constructor() {
+    super();
+  }
+
+  fetchdata = async () => {
+    try {
+      const user = getAuth().currentUser;
+      if (!user) throw new Error("User not authenticated");
+
+      const alarmsCollection = collection(FIRESTORE_DB, "Alarms");
+      const alarmsSnapshot = await getDocs(
+        query(alarmsCollection, where("userId", "==", user.uid))
+      );
+
+      const alarms = alarmsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return alarms;
+    } catch (error) {
+      console.error("Error fetching alarms:", error);
+      throw error;
+    }
+  };
+}
+
+class UpdateOrAddAlarm extends Fetching {
+    constructor() {
+      super();
+    }
+  
+    fetchdata = async (alarmData, alarmId = null) => {
+      try {
+        const user = getAuth().currentUser;
+        if (!user) throw new Error("User not authenticated");
+  
+        const alarmsCollection = collection(FIRESTORE_DB, "Alarms");
+  
+        if (alarmId) {
+          // Update existing alarm
+          const alarmDocRef = doc(FIRESTORE_DB, "Alarms", alarmId);
+          await updateDoc(alarmDocRef, { ...alarmData, userId: user.uid });
+        } else {
+          // Add new alarm
+          const newAlarmDocRef = doc(alarmsCollection);
+          await setDoc(newAlarmDocRef, { ...alarmData, userId: user.uid });
+        }
+  
+        return true;
+      } catch (error) {
+        console.error("Error adding or updating alarm:", error);
+        throw error;
+      }
+    };
+  }
+  
+
 export {
   Fetching,
   Fetchemails,
@@ -201,4 +282,6 @@ export {
   FetchCurrentUserEmail,
   FetchFitnessData,
   UpdateFitnessData,
+  FetchAlarms,
+  UpdateOrAddAlarm
 };

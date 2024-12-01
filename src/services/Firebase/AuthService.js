@@ -26,6 +26,7 @@ class SignUpClass extends AuthService {
     constructor() {
         super();
     }
+
     authenticate = async (formData) => {
         const auth = FIREBASE_AUTH;
         const userinfo = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
@@ -54,8 +55,24 @@ class SignUpClass extends AuthService {
             weight: 60,
             sleepGoal: 8
         });
+
+        // Create alarms table for the user with default alarms
+        const alarmsCollectionRef = collection(FIRESTORE_DB, "Alarms");
+        const defaultAlarms = [
+            { time: "7:00 AM", days: "Mon, Tues, Wed, Thu, Fri", enabled: true },
+            { time: "10:00 PM", days: "Sat, Sun", enabled: false }
+        ];
+
+        for (const alarm of defaultAlarms) {
+            await addDoc(alarmsCollectionRef, {
+                ...alarm,
+                userId: user.uid, // Associate the alarm with the user
+                createdAt: new Date()
+            });
+        }
     };
 }
+
 
 class AddGroup extends AuthService {
     constructor() {
